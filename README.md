@@ -519,3 +519,22 @@ JSON lebih sering digunakan dalam pertukaran data karena format JSON lebih mudah
    ```
    path('html/', show_html, name='show_html')
    ```
+
+## Screenshot Postman
+
+- localhost:8000/xml
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/e4857bec-02f4-4a7a-ab17-0a76ba386518)
+
+- localhost:8000/json
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/7c9bfed8-69d8-4ffe-b481-d085b115d71e)
+
+- localhost:8000/xml/1
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/7c72e393-2a4e-45a4-b1e0-3a3ba734ba60)
+
+- localhost:8000/json/1
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/195a5e4f-3a2a-4248-a65b-3ddf741bd7af)
+
+- localhost:8000/html
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/4ccf1c77-0f34-497b-8394-47d704847188)
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/6036e247-9822-4f8c-80f9-7988554431fc)
+
