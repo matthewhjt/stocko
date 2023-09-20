@@ -1,18 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Stocko - Tugas PBP</title>
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" type="image/x-icon">
-</head>
+{% block content %}
+    <h1>Stocko</h1>
 
-<body style="background-color: #333; color: white;">
-    <h1>Stocko - Kelola Stock Toko</h1>
-    <hr>
-    <h3>Nama: {{nama}}</h3>
-    <h3>NPM: {{npm}}</h3>
-    <h3>Kelas: {{kelas}}</h3>
-</body>
+    <h5>Name:</h5>
+    <p>{{nama}}</p>
 
-</html> 
+    <h5>NPM:</h5>
+    <p>{{npm}}</p>
+
+    <h5>Kelas:</h5>
+    <p>{{kelas}}</p>
+    <table>
+        <tr>
+            <th colspan="4">Anda menyimpan {{products.count}} produk pada aplikasi ini</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+    
+        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
+    
+        {% for product in products %}
+            <tr>
+                <td>{{product.name}}</td>
+                <td>{{product.amount}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.description}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <br />
+    
+    <a href="{% url 'main:create_product' %}">
+        <button>
+            Add New Product
+        </button>
+    </a>
+{% endblock content %}
