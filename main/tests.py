@@ -12,11 +12,6 @@ class mainTest(TestCase):
     def test_main_model(self):
         c = Client()
         response = c.get('/main/')
-        context_test = {
-        'nama': 'Matthew Hotmaaja Johan Turnip',
-        'npm' : '2206081231',
-        'kelas': 'PBP C'
-        }
         self.assertEqual(response.context['nama'], 'Matthew Hotmaraja Johan Turnip')
         self.assertEqual(response.context['npm'], '2206081231')
         self.assertEqual(response.context['kelas'], 'PBP C')
