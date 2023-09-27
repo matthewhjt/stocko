@@ -794,7 +794,11 @@ Penggunaan <i>cookies</i> secara <i>default</i> (tanpa modifikasi atau validasi 
 ### Membuat dua akun dengan data dummy di lokal
 
 - Akun Pertama
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/c9634761-7ca1-4da5-8627-6e25f09927b0)
+
 - Akun Kedua
+  ![image](https://github.com/matthewhjt/stocko/assets/112328487/1c77a477-aaf9-4564-a94f-9e48827d9aa4)
+
 
 ### Menghubungkan model Product dan User
 
