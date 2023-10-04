@@ -30,41 +30,41 @@
         </nav>
 </header>
 
-<div class="container-fluid bg-dark text-white p-2">
-    <table class="table table-striped table-dark table-bordered">
+<div class="container-fluid bg-dark text-white p-2 table-responsive">
+    <table class="table table-striped table-dark table-bordered table-hover table-fixed">
         <thead class="thead-dark">
-        <tr>
-            <th colspan="7">Anda menyimpan {{products.count}} produk pada aplikasi ini</th>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Description</th>
-        </tr>
-          </thead>
+            <tr>
+                <th class="text-center" colspan="7">Anda menyimpan {{products.count}} produk pada aplikasi ini</th>
+            </tr>
+            <tr>
+                <th class="th-sm text-center">Name</th>
+                <th class="th-sm text-center">Amount</th>
+                <th class="th-sm text-center">Price</th>
+                <th class="w-75 text-wrap" style="width: 6rem;">Description</th>
+            </tr>
+        </thead>
     
         {% for product in products %}
-            <tr>
+            <tr {% if forloop.last %} class = "table-danger" {% endif %}>
                 <td>{{product.name}}</td>
-                <td>{{product.amount}}</td>
-                <td>{{product.price}}</td>
+                <td class="text-center">{{product.amount}}</td>
+                <td class="text-center">{{product.price}}</td>
                 <td>{{product.description}}</td>
-                <td>
+                <td class="text-center">
                     <a href="{% url 'main:add_amount' id=product.id %}">
                         <button class="btn btn-primary">
                             Add
                         </button>
                     </a>
                 </td>
-                <td>
+                <td class="text-center">
                     <a href="{% url 'main:subtract_amount' id=product.id %}">
                         <button class="btn btn-primary">
                             Subtract
                         </button>
                     </a>
                 </td>
-                <td>
+                <td class="text-center">
                     <a href="{% url 'main:delete_product' id=product.id %}">
                         <button class="btn btn-danger">
                             Delete

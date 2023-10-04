@@ -921,5 +921,309 @@ Margin adalah ruang di luar elemen (di sekitar border) yang mengosongkan area di
 
 # Implementasi
 
-1. Menginstal Bootstrap
-2. Mengaplikasikan sintaks bootstrap pada masing-masing file html.
+1.  Menginstal Bootstrap
+2.  Menambahkan header navbar pada main.html dan create_product.html
+
+        <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid d-flex justify-content-center text-white text-center">
+                <h5>{{nama}} <br><br> {{kelas}}</h5>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-expand-xl navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'main:show_main' %}">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="30" height="30" alt=""> Stocko
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add New Product</a>
+                    </div>
+                    <div class="text-white">
+                        <a href="{% url 'main:logout' %}">
+                            <button type="button" class="btn btn-danger">Logout</button>
+                        </a>
+                    </div>
+            </div>
+        </nav>
+
+        </header>
+
+3.  Mengubah tampilan halaman main, register, login, dan create_product
+
+    - login.html
+
+      ```
+      {% extends 'base.html' %}
+
+      {% block meta %}
+          <title>Login</title>
+      {% endblock meta %}
+
+      {% block content %}
+
+      <div class="container-fluid p-2 h-100 d-flex flex-column align-items-center bg-dark text-white">
+
+          <div class = "login p-2 d-flex flex-column align-items-center">
+
+              <h1>Login</h1>
+              <br>
+              <form method="POST">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label for="id_username">Username</label>
+                      <input type="text" name="username" class="form-control" placeholder="Username">
+                  </div>
+                  <br>
+                  <div class="form-group">
+                      <label for="id_password">Password</label>
+                      <input type="password" name="password" class="form-control" placeholder="Password">
+                  </div>
+                  <br>
+                  <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Login</button>
+                  </div>
+              </form>
+
+              {% if messages %}
+                  <ul>
+                      {% for message in messages %}
+                          <li>{{ message }}</li>
+                      {% endfor %}
+                  </ul>
+              {% endif %}
+
+              <br>
+              Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+          </div>
+
+      </div>
+
+      {% endblock content %}
+      ```
+
+    - register.html
+
+      ```
+      {% extends 'base.html' %}
+
+        {% block meta %}
+        <title>Register</title>
+        {% endblock meta %}
+
+        {% block content %}
+
+        <div class="container-fluid p-2 h-100 d-flex flex-column align-items-center bg-dark text-white">
+
+            <div class = "login p-2 d-flex flex-column align-items-center">
+
+                <h1>Register</h1>
+
+                    <form method="POST" >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username">Username*</label>
+                            <input type="text" name="username" class="form-control" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username">
+                            Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="id_password1">Password*</label>
+                            <input type="password" name="password1" class="form-control" autocomplete="new-password" required id="id_password1">
+                            <ul>
+                                <li>Your password can’t be too similar to your other personal information.</li>
+                                <li>Your password must contain at least 8 characters.</li>
+                                <li>Your password can’t be a commonly used password.</li>
+                                <li>Your password can’t be entirely numeric.</li>
+                            </ul>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="id_password2">Password Confirmation*</label>
+                            <input type="password" name="password2" class="form-control" autocomplete="new-password" required id="id_password2">
+                            Enter the same password as before, for verification.
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+
+                    <br>
+                    Already have an account? <a href="{% url 'main:login' %}">Login</a>
+
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endblock content %}
+      ```
+
+    - create_product.html
+
+      ```
+      {% extends 'base.html' %}
+
+      {% block content %}
+
+      <header>
+          <nav class="navbar navbar-dark bg-dark">
+              <div class="container-fluid d-flex justify-content-center text-white text-center">
+                  <h5>{{nama}} <br><br> {{kelas}}</h5>
+              </div>
+          </nav>
+          <nav class="navbar navbar-expand-xl navbar-dark">
+
+              <div class="container-fluid">
+              <a class="navbar-brand" href="{% url 'main:show_main' %}">
+                  <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="30" height="30" alt=""> Stocko
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                  <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add New Product</a>
+                  </div>
+                  <div class="text-white">
+                      <a href="{% url 'main:logout' %}">
+                          <button type="button" class="btn btn-danger">Logout</button>
+                      </a>
+                  </div>
+              </div>
+              </div>
+          </nav>
+      </header>
+      <div class="container-fluid text-white">
+      <h1>Add New Product</h1>
+          <form method="POST" class="col-md-3">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="name">Name: </label>
+                  <input type="text" name="name" class="form-control" required id="id_name" placeholder="Name">
+              </div>
+              <br>
+              <div class="form-group">
+                  <label for="amount">Amount: </label>
+                  <input type="number" name="amount"  class="form-control" required id="id_amount" placeholder="1">
+              </div>
+              <br>
+              <div class="form-group">
+                  <label for="price">Price: </label>
+                  <input type="number" name="price"  class="form-control" required id="id_price" placeholder="1">
+              </div>
+              <br>
+              <div class="form-group">
+                  <label for="description">Description: </label>
+                  <textarea name="description" class="form-control" cols="40" rows="10" required id="id_description"></textarea>
+              </div>
+              <br>
+              <div class="container">
+                  <button type="submit" class="btn btn-primary">Add Product</button>
+              </div>
+          </form>
+      </div>
+
+      {% endblock %}
+      ```
+
+    - main.html
+
+      ```
+      {% extends 'base.html' %}
+
+      {% block content %}
+      <header>
+          <nav class="navbar navbar-dark bg-dark">
+              <div class="container-fluid d-flex justify-content-center text-white text-center">
+                  <h5>{{nama}} <br><br> {{kelas}}</h5>
+              </div>
+          </nav>
+          <nav class="navbar navbar-expand-xl navbar-dark">
+
+              <div class="container-fluid">
+                  <a class="navbar-brand" href="{% url 'main:show_main' %}">
+                  <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="30" height="30" alt=""> Stocko
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                      <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add New Product</a>
+                  </div>
+                  <div class="text-white">
+                      <a href="{% url 'main:logout' %}">
+                          <button type="button" class="btn btn-danger">Logout</button>
+                      </a>
+                  </div>
+                  </div>
+              </div>
+              </nav>
+      </header>
+
+      <div class="container-fluid bg-dark text-white p-2 table-responsive">
+          <table class="table table-striped table-dark table-bordered table-hover table-fixed">
+              <thead class="thead-dark">
+                  <tr>
+                      <th class="text-center" colspan="7">Anda menyimpan {{products.count}} produk pada aplikasi ini</th>
+                  </tr>
+                  <tr>
+                      <th class="th-sm text-center">Name</th>
+                      <th class="th-sm text-center">Amount</th>
+                      <th class="th-sm text-center">Price</th>
+                      <th class="w-75 text-wrap" style="width: 6rem;">Description</th>
+                  </tr>
+              </thead>
+
+              {% for product in products %}
+                  <tr {% if forloop.last %} class = "table-danger" {% endif %}>
+                      <td>{{product.name}}</td>
+                      <td class="text-center">{{product.amount}}</td>
+                      <td class="text-center">{{product.price}}</td>
+                      <td>{{product.description}}</td>
+                      <td class="text-center">
+                          <a href="{% url 'main:add_amount' id=product.id %}">
+                              <button class="btn btn-primary">
+                                  Add
+                              </button>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a href="{% url 'main:subtract_amount' id=product.id %}">
+                              <button class="btn btn-primary">
+                                  Subtract
+                              </button>
+                          </a>
+                      </td>
+                      <td class="text-center">
+                          <a href="{% url 'main:delete_product' id=product.id %}">
+                              <button class="btn btn-danger">
+                                  Delete
+                              </button>
+                          </a>
+                      </td>
+                  </tr>
+              {% endfor %}
+          </table>
+
+          <br />
+
+          <h5>Sesi terakhir login: {{ last_login }}</h5>
+
+      </div>
+      {% endblock content %}
+      ```
