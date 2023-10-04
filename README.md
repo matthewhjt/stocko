@@ -799,7 +799,6 @@ Penggunaan <i>cookies</i> secara <i>default</i> (tanpa modifikasi atau validasi 
 - Akun Kedua
   ![image](https://github.com/matthewhjt/stocko/assets/112328487/1c77a477-aaf9-4564-a94f-9e48827d9aa4)
 
-
 ### Menghubungkan model Product dan User
 
 1. Pada main.models import User
@@ -866,3 +865,61 @@ Penggunaan <i>cookies</i> secara <i>default</i> (tanpa modifikasi atau validasi 
    <h5>Sesi terakhir login: {{ last_login }}</h5>
    ...
    ```
+
+# Tugas 5
+
+## Manfaat Element Selector
+
+- Universal Selector
+  Universal selector berfungsi untuk memilih semua elemen di dalam dokumen HTML. Universal selector digunakan ketika kita ingin mengubah keseluruhan dokumen. Jarang digunakan
+
+- Element Selector
+  Element selector berfungsi untuk memilih semua elemen yang memiliki tag HTML yang sama di dalam dokumen HTML. Element selector digunakan saat kita ingin mengubah element dalam HTML sesuai tagnya.
+
+- ID Selector
+  ID selector berfungsi untuk memilih elemen berdasarkan tagnya. ID Selector digunakan ketika kita ingin mengubah elemen spesifik karena id bersifat unik.
+
+- Class Selector
+  Class selector berfungsi untuk mengelompokkan elemen dengan karakteristik yang sama. Class selector digunakan ketika kita ingin memodifikasi sebuah kelompok tag/class tertentu di dalam dokumen HTML
+
+## Tag HTML5
+
+- Header
+  Header adalah tag HTML yang menandakan bahwa elemen-elemen di dalam tag tersebut adalah kepala dari dokumen (contohnya untuk menampung navbar)
+
+- Nav
+  Nav digunakan untuk mengelompokkan elemen yang berfungsi sebagai navigasi dalam suatu website
+
+- Main
+  Main adalah tag utama di HTML, isinya adalah elemen-elemen utama yang ditampilkan pada sebuah halaman website
+
+- Form
+  Form adalah tag HTML untuk menerima formulir input dari pengguna
+
+- Input
+  Input biasanya digunakan bersamaan dengan form untuk menampung data input.
+
+- Textarea
+  Textarea adalah salah satu jenis input untuk menampung teks yang panjang
+
+## Perbedaan Margin dan Padding
+
+Margin adalah ruang di luar elemen (di sekitar border) yang mengosongkan area di sekitar border. Sementara itu, Padding adalah ruang di dalam elemen yang mengosongkan area di sekitar konten. Keduanya tidak terlihat alias transparan
+
+## Perbedaan Framework Tailwind dan Bootstrap
+
+- Tailwind
+
+  - Tailwind CSS membangun tampilan dengan menggabungkan kelas-kelas utilitas yang telah didefinisikan sebelumnya.
+  - Tailwind CSS memiliki file CSS yang lebih kecil sedikit dibandingkan Bootstrap dan hanya akan memuat kelas-kelas utilitas yang ada
+
+- Bootstrap
+
+  - Bootstrap menggunakan gaya dan komponen yang telah didefinisikan, yang memiliki tampilan yang sudah jadi dan dapat digunakan secara langsung.
+
+  - Bootstrap menggunakan gaya dan komponen yang telah didefinisikan, yang memiliki tampilan yang sudah jadi dan dapat digunakan secara langsung.
+
+# Implementasi
+
+1. Menginstal Bootstrap
+2. Mengaplikasikan sintaks bootstrap pada masing-masing file html.

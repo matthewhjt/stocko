@@ -33,7 +33,11 @@ def create_product(request):
         product.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
-    context = {'form': form}
+    context = {
+        'form': form,
+        'nama' : request.user.username,
+        'kelas': "PBP C"
+    }
     return render(request, "create_product.html", context)
 
 @login_required(login_url='/login')
