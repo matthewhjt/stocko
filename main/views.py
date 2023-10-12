@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from main.forms import ProductForm
 from main.models import Product
 from django.urls import reverse
@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages  
 import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -122,3 +123,44 @@ def delete_product(request, id):
     product = Product.objects.get(user=request.user, pk=id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@login_required(login_url='/login')
+def get_product_json(request):
+    product_item = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@login_required(login_url='/login')
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Product(name=name, amount=amount, price=price, description=description, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
+
+@login_required(login_url='/login')
+def add_amount_ajax(request, id):
+    product = Product.objects.get(user=request.user, pk=id)
+    product.add_amount()
+    product.save()
+    return HttpResponse(b"UPDATED", status=204)
+
+@login_required(login_url='/login')
+def subtract_amount_ajax(request, id):
+    product = Product.objects.get(user=request.user, pk=id)
+    product.subtract_amount()
+    product.save()
+    return HttpResponse(b"UPDATED", status=204)
+
+@login_required(login_url='/login')
+def delete_product_ajax(request, id):
+    product = Product.objects.get(user=request.user, pk=id)
+    product.delete()
+    return HttpResponse(b"DELETED", status=204)

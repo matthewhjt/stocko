@@ -6,7 +6,7 @@
 
 {% block content %}  
 
-<div class="container-fluid p-2 h-100 d-flex flex-column align-items-center bg-dark text-white">
+<div class="container-fluid p-2 h-100 d-flex flex-column justify-content-center bg-dark text-white">
 
     <div class = "login p-2 d-flex flex-column align-items-center">
         
@@ -45,15 +45,15 @@
             <br>
             Already have an account? <a href="{% url 'main:login' %}">Login</a>
 
-        {% if messages %}  
+    </div>  
+
+    {% if messages %}  
             <ul>   
                 {% for message in messages %}  
                     <li>{{ message }}</li>  
                 {% endfor %}  
             </ul>   
         {% endif %}
-
-    </div>  
 
 </div>
 

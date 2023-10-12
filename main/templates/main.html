@@ -30,54 +30,124 @@
         </nav>
 </header>
 
-<div class="container-fluid bg-dark text-white p-2 table-responsive">
-    <table class="table table-striped table-dark table-bordered table-hover table-fixed">
-        <thead class="thead-dark">
-            <tr>
-                <th class="text-center" colspan="7">Anda menyimpan {{products.count}} produk pada aplikasi ini</th>
-            </tr>
-            <tr>
-                <th class="th-sm text-center">Name</th>
-                <th class="th-sm text-center">Amount</th>
-                <th class="th-sm text-center">Price</th>
-                <th class="w-75 text-wrap" style="width: 6rem;">Description</th>
-            </tr>
-        </thead>
-    
-        {% for product in products %}
-            <tr {% if forloop.last %} class = "table-danger" {% endif %}>
-                <td>{{product.name}}</td>
-                <td class="text-center">{{product.amount}}</td>
-                <td class="text-center">{{product.price}}</td>
-                <td>{{product.description}}</td>
-                <td class="text-center">
-                    <a href="{% url 'main:add_amount' id=product.id %}">
-                        <button class="btn btn-primary">
-                            Add
-                        </button>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a href="{% url 'main:subtract_amount' id=product.id %}">
-                        <button class="btn btn-primary">
-                            Subtract
-                        </button>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a href="{% url 'main:delete_product' id=product.id %}">
-                        <button class="btn btn-danger">
-                            Delete
-                        </button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    
-    <br />
+<div class="p-2 container-fluid bg-dark text-white">
+    <h5 class="p-2">Sesi terakhir login: {{ last_login }}</h5>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    <div class="text-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+    </div>
 
+    <div id="product_cards">
+
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="number" class="form-control" id="amount" name="amount"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add_product" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+    }
+
+    async function refreshProducts() {
+    
+        const products = await getProducts()
+        let htmlString = '<div class="p-2 row row-cols-1 row-cols-md-4">'
+        products.forEach((product) => { 
+
+            htmlString += 
+                `\n\t<div class="p-3 card-row col mb-4">`
+
+            if (product == products[products.length - 1]){
+                htmlString += 
+                `\n\t<div class="p-2 card mb-3 bg-danger bg-gradient text-white shadow rounded">`
+            } else {
+                htmlString += 
+                `\n\t<div class="p-2 card mb-3 bg-secondary bg-gradient text-white shadow rounded">`
+            }
+
+            htmlString += 
+                        `<div class="card-header">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="250" height="250" alt="" class="card-img-top">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${product.fields.name}</h5>
+                            <h6 class="card-subtitle mb-2">Amount: ${product.fields.amount}</h6>
+                            <h6 class="card-subtitle mb-2">Price: ${product.fields.price}</h6>
+                            <p class="card-text text">${product.fields.description}</p>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=addAmount(${product.pk})>Add</button>
+                                <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=subtractAmount(${product.pk})>Subtract</button>
+                                <button type="button" class="btn btn-danger border-dark shadow rounded" onclick=deleteProduct(${product.pk})>Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+        })
+        htmlString += '\n</div>'
+        
+        document.getElementById("product_cards").innerHTML = htmlString
+    }
+
+    refreshProducts()
+
+    function addProduct() {
+        fetch("{% url 'main:add_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add_product").onclick = addProduct
+
+    function addAmount(id) {
+        fetch("add-amount-ajax/" + id).then(refreshProducts)
+    }
+
+    function subtractAmount(id) {
+        fetch("subtract-amount-ajax/" + id).then(refreshProducts)
+    }
+
+    function deleteProduct(id) {
+        fetch("delete-product-ajax/" + id).then(refreshProducts)
+    }
+
+</script>
 {% endblock content %}

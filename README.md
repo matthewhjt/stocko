@@ -1227,3 +1227,257 @@ Margin adalah ruang di luar elemen (di sekitar border) yang mengosongkan area di
       </div>
       {% endblock content %}
       ```
+
+# Tugas 6
+
+## Perbedaan <i>asynchronous programming</i> dan <i>synchronous programming</i>
+
+Pada <i>synchronous programming</i>, program dieksekusi secara berurutan dan satu per satu. Pengguna harus menunggu program lalu me-<i>refresh</i> halaman baru untuk melanjutkan menggunakan <i>website</i>. Sementara itu, pada <i>asynchronous programming</i>, program dapat dieksekusi secara bersamaan atau secara paralel dengan program lainnya. Pengguna bisa menggunakan <i>website</i> tanpa harus menunggu tampilan halaman baru.
+
+## Paradigma <i>Event-Driven Programming</i> dan Contoh
+
+<i>Event-Driven Programming</i> merupakan salah satu paradigma yang didasarkan pada peristiwa (<i>event</i>) yang terjadi pada program. <i>Event</i> yang dimaksud dapat berupa input dari pengguna seperti <i>input form</i> atau saat pengguna mengklik sebuah <i>button</i>. Program akan bereaksi terhadap input yang diberikan oleh pengguna (<i>event handling</i>). Contohnya pada tugas PBP adalah <i>button</i> Add New Product dan Delete Product yang akan bereaksi ketika pengguna mengklik <i>button</i> tersebut.
+
+## Penerapan <i>asynchronous programming</i> pada AJAX.
+
+Asynchronous JavaScript and XML (AJAX) adalah salah satu teknik baru untuk menciptakan sebuah aplikasi web yang lebih bagus dan lebih interaktif. Dengan AJAX, <i>asynchronous programming</i> dapat diterapkan pada aplikasi web sehingga aplikasi web dapat diperbarui tanpa harus membuat penggunanya menunggu (menghindari pengguna harus me-<i>refresh</i> halaman setiap ada perubahan).
+
+## Perbandingan Fetch API dan JQuery
+
+Penerapan AJAX dapat dilakukan dengan menggunakan Fetch API maupun JQuery. Baik Fetch API dan jQuery adalah dua cara yang umum digunakan untuk menerapkan AJAX dalam pengembangan web. Namun, kedua teknologi ini memiliki karakteristik dan kelebihan yang berbeda.
+
+JQuery adalah sebuah library JavaScript yang memiliki fitur AJAX built-in. JQuery mudah digunakan untuk AJAX dan memiliki kompabilitas dengan <i>browser</i> lama. Di sisi lain, Fetch API adalah sebuah alternatif yang merupakan bagian dari standar JavaScript modern. Fetch API terintegrasi dengan promise yang memudahkan penanganan respons dan penanganan kesalahan. Fetch API lebih ringan daripada jQuery karena tidak memerlukan unduhan library tambahan. Menurut saya, Fetch API lebih baik digunakan daripada JQuery karena Fetch API merupakan standar website modern. Selain itu, Fetch API mendapat dukungan dari komunitas JavaScript yang besar. Fetch API juga menyediakan promise sehingga dapat menangani response dan error dengan lebih baik.
+
+## Implementasi Tugas
+
+### Menampilkan Data pada halaman main
+
+1. Membuat function yang akan mengambil (get) objek Product dalam bentuk json
+
+   ```
+   @login_required(login_url='/login')
+    def get_product_json(request):
+        product_item = Product.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('json', product_item))
+   ```
+
+2. Menambahkan path untuk function pada urls.py
+
+   ```
+   path('get-product/', get_product_json, name='get_product_json'),
+   ```
+
+3. Mengubah main.html sehingga product ditampilkan menggunakan function AJAX
+
+   ```
+   <div id="product_cards">
+
+   </div>
+   ```
+
+4. Menambahkan block <i>script</i> dan fuction yang akan menampilkan produk.
+
+   ```
+   <script>
+   async function getProducts() {
+       return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+   }
+
+   async function refreshProducts() {
+
+       const products = await getProducts()
+       let htmlString = '<div class="p-2 row row-cols-1 row-cols-md-4">'
+       products.forEach((product) => {
+
+           htmlString +=
+               `\n\t<div class="p-3 card-row col mb-4">`
+
+           if (product == products[products.length - 1]){
+               htmlString +=
+               `\n\t<div class="p-2 card mb-3 bg-danger bg-gradient text-white shadow rounded">`
+           } else {
+               htmlString +=
+               `\n\t<div class="p-2 card mb-3 bg-secondary bg-gradient text-white shadow rounded">`
+           }
+
+           htmlString +=
+                       `<div class="card-header">
+                           <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="250" height="250" alt="" class="card-img-top">
+                       </div>
+                       <div class="card-body">
+                           <h5 class="card-title">${product.fields.name}</h5>
+                           <h6 class="card-subtitle mb-2">Amount: ${product.fields.amount}</h6>
+                           <h6 class="card-subtitle mb-2">Price: ${product.fields.price}</h6>
+                           <p class="card-text text">${product.fields.description}</p>
+                           <div class="text-center">
+                               <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=addAmount(${product.pk})>Add</button>
+                               <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=subtractAmount(${product.pk})>Subtract</button>
+                               <button type="button" class="btn btn-danger border-dark shadow rounded" onclick=deleteProduct(${product.pk})>Delete</button>
+                           </div>
+                       </div>
+                   </div>
+               </div>`
+       })
+       htmlString += '\n</div>'
+
+       document.getElementById("product_cards").innerHTML = htmlString
+   }
+
+   refreshProducts()
+   </script>
+   ```
+
+   Pertama-tama, semua objek Product akan diambil dengan function getProduct, lalu function refreshProduct akan menampilkan objek tersebut dalam bentuk Cards
+
+### Menambahkan function untuk menambah produk secara AJAX
+
+1. Membuat modal yang akan menerima input form dan button yang akan membuka modal tersebut.
+
+   ```
+   <div class="text-center">
+       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+   </div>
+
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+           <div class="modal-content bg-dark">
+               <div class="modal-header">
+                   <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <form id="form" onsubmit="return false;">
+                       {% csrf_token %}
+                       <div class="mb-3">
+                           <label for="name" class="col-form-label">Name:</label>
+                           <input type="text" class="form-control" id="name" name="name"></input>
+                       </div>
+                       <div class="mb-3">
+                           <label for="amount" class="col-form-label">Amount:</label>
+                           <input type="number" class="form-control" id="amount" name="amount"></input>
+                       </div>
+                       <div class="mb-3">
+                           <label for="price" class="col-form-label">Price:</label>
+                           <input type="number" class="form-control" id="price" name="price"></input>
+                       </div>
+                       <div class="mb-3">
+                           <label for="description" class="col-form-label">Description:</label>
+                           <textarea class="form-control" id="description" name="description"></textarea>
+                       </div>
+                   </form>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-primary" id="button_add_product" data-bs-dismiss="modal">Add Product</button>
+               </div>
+           </div>
+       </div>
+   </div>
+   ```
+
+2. Membuat fungsi yang akan menambah product secara AJAX pada views.py
+
+   ```
+   @login_required(login_url='/login')
+   @csrf_exempt
+   def add_product_ajax(request):
+       if request.method == 'POST':
+           name = request.POST.get("name")
+           amount = request.POST.get("amount")
+           price = request.POST.get("price")
+           description = request.POST.get("description")
+           user = request.user
+
+           new_product = Product(name=name, amount=amount, price=price, description=description, user=user)
+           new_product.save()
+
+           return HttpResponse(b"CREATED", status=201)
+       return HttpResponseNotFound()
+   ```
+
+   Sama seperti yang biasa, tetapi function akan mereturn HTTPResponse, bukan me-redirect user.
+
+3. Menambahkan fungsi add product pada block script
+
+   ```
+   function addProduct() {
+           fetch("{% url 'main:add_product_ajax' %}", {
+               method: "POST",
+               body: new FormData(document.querySelector('#form'))
+           }).then(refreshProducts)
+
+           document.getElementById("form").reset()
+           return false
+       }
+
+       document.getElementById("button_add_product").onclick = addProduct
+   ```
+
+   Fungsi akan ditambahkan pada button add product sehingga ketika button tersebut diklik fungsi ini akan dipanggil
+
+### Menambah function lain seperti Add Amount, Subtract Amount, dan Delete Product
+
+1. Menambahkan fungsi add, subtract, dan delete secara AJAX pada views.py
+
+   ```
+   @login_required(login_url='/login')
+   def add_amount_ajax(request, id):
+       product = Product.objects.get(user=request.user, pk=id)
+       product.add_amount()
+       product.save()
+       return HttpResponse(b"UPDATED", status=204)
+
+   @login_required(login_url='/login')
+   def subtract_amount_ajax(request, id):
+       product = Product.objects.get(user=request.user, pk=id)
+       product.subtract_amount()
+       product.save()
+       return HttpResponse(b"UPDATED", status=204)
+
+   @login_required(login_url='/login')
+   def delete_product_ajax(request, id):
+       product = Product.objects.get(user=request.user, pk=id)
+       product.delete()
+       return HttpResponse(b"DELETED", status=204)
+   ```
+
+   Sama seperti Add New Product, fungsi-fungsi ini sudah dibuat di tugas sebelumnya, hanya saja dimodifikasi sehingga hanya mereturn HTTPResponse, bukan meredirect halaman.
+
+2. Menambahkan fungsi pada block script html
+
+   ```
+   function addAmount(id) {
+       fetch("add-amount-ajax/" + id).then(refreshProducts)
+   }
+
+   function subtractAmount(id) {
+       fetch("subtract-amount-ajax/" + id).then(refreshProducts)
+   }
+
+   function deleteProduct(id) {
+       fetch("delete-product-ajax/" + id).then(refreshProducts)
+   }
+   ```
+
+   Setiap button pada cards masing-masing memiliki atribut onclick yang akan memanggil fungsi di atas ketika button tersebut diklik. Fungsi tersebut akan mem-<i>fetch</i> setiap url fungsi lalu me-<i>refresh</i> produk secara <i>asynchronous</i>.
+
+### Melakukan Collecstatic
+
+1. Import os ke settings.py
+
+   ```
+   import os
+   ```
+
+2. Menambahkan PROJECT_ROOT dan STATIC_ROOT pada settings.py
+
+   ```
+   PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+   STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+   ```
+
+3. Pada terminal, lakukan perintah Collecstatic
+
+   ```
+   python manage.py collecstatic
+   ```
