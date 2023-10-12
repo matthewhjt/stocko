@@ -1,13 +1,16 @@
-# Tugas 2 - Stocko
+# Stocko
 
 <hr>
 
-## Link menuju situs: https://stocko-pbp.adaptable.app/main/
+## Link menuju situs: https://matthew-hotmaraja-tugas.pbp.cs.ui.ac.id/
 
 - Nama: Matthew Hotmaraja Johan Turnip
 - NPM: 2206081231
 - Kelas: PBP C
-<hr>
+
+<br>
+
+# Tugas 2
 
 ## Langkah-Langkah Mengimplementasi
 
