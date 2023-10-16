@@ -6,54 +6,54 @@
 
 {% block content %}  
 
-<div class="container-fluid p-2 h-100 d-flex flex-column justify-content-center bg-dark text-white">
+<div class="container-fluid p-2 d-flex flex-column justify-content-center align-items-center bg-dark text-white">
 
-    <div class = "login p-2 d-flex flex-column align-items-center">
+    <div class = "register m-5 h-75 d-flex flex-column justify-content-center align-items-center shadow rounded">
         
         <h1>Register</h1>  
 
-            <form method="POST" >  
+            <form method="POST" class="col-8">  
                 {% csrf_token %}    
                 <div class="form-group">
                     <label for="id_username">Username*</label>
                     <input type="text" name="username" class="form-control" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username">
-                    Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                    <p>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
                 </div>
-                <br>
                 <div class="form-group">
                     <label for="id_password1">Password*</label>
                     <input type="password" name="password1" class="form-control" autocomplete="new-password" required id="id_password1">
-                    <ul>
-                        <li>Your password can’t be too similar to your other personal information.</li>
-                        <li>Your password must contain at least 8 characters.</li>
-                        <li>Your password can’t be a commonly used password.</li>
-                        <li>Your password can’t be entirely numeric.</li>
-                    </ul>
+                    <p>
+                        <ul>
+                            <li>Your password can’t be too similar to your other personal information.</li>
+                            <li>Your password must contain at least 8 characters.</li>
+                            <li>Your password can’t be a commonly used password.</li>
+                            <li>Your password can’t be entirely numeric.</li>
+                        </ul>
+                    </p>
                 </div>
-                <br>
                 <div class="form-group">
                     <label for="id_password2">Password Confirmation*</label>
                     <input type="password" name="password2" class="form-control" autocomplete="new-password" required id="id_password2">
-                    Enter the same password as before, for verification.
+                    <p>Enter the same password as before, for verification.</p>
                 </div>
                 <br>
-                <div class="text-center">
+                <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary">Register</button>
-                </div> 
+                </div>
             </form>
 
-            <br>
-            Already have an account? <a href="{% url 'main:login' %}">Login</a>
+        <br>
+        <p class="text-center">Already have an account? <br> <a href="{% url 'main:login' %}">Login</a></p>
+
+        {% if messages %}  
+                <ul>   
+                    {% for message in messages %}  
+                        <li>{{ message }}</li>  
+                    {% endfor %}  
+                </ul>   
+        {% endif %}
 
     </div>  
-
-    {% if messages %}  
-            <ul>   
-                {% for message in messages %}  
-                    <li>{{ message }}</li>  
-                {% endfor %}  
-            </ul>   
-        {% endif %}
 
 </div>
 

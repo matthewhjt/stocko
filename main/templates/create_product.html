@@ -1,38 +1,10 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid d-flex justify-content-center text-white text-center">
-            <h5>{{nama}} <br><br> {{kelas}}</h5>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-xl navbar-dark">
-        
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'main:show_main' %}">
-            <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="30" height="30" alt=""> Stocko
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add New Product</a>
-            </div>
-            <div class="text-white">
-                <a href="{% url 'main:logout' %}">
-                    <button type="button" class="btn btn-danger">Logout</button>
-                </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-</header>
-<div class="container-fluid text-white">
-<h1>Add New Product</h1>
-    <form method="POST" class="col-md-3">
+<div class="container-fluid text-white d-flex flex-column align-items-center justify-content-center">
+    <h1>Add New Product</h1>
+    <br>
+    <form method="POST" class="col-xxl-5">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Name: </label>
@@ -54,9 +26,9 @@
             <textarea name="description" class="form-control" cols="40" rows="10" required id="id_description"></textarea>
         </div>
         <br>
-        <div class="container">
-            <button type="submit" class="btn btn-primary">Add Product</button>
-        </div> 
+        <div class="text-center">
+            <button type="submit" class="btn text-white" style="background-color: #0065a9;">Add Product</button>
+        </div>
     </form>
 </div>
 

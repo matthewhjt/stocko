@@ -1,40 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid d-flex justify-content-center text-white text-center">
-            <h5>{{nama}} <br><br> {{kelas}}</h5>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-xl navbar-dark">
-        
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'main:show_main' %}">
-            <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="30" height="30" alt=""> Stocko
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{% url 'main:create_product' %}">Add New Product</a>
-            </div>
-            <div class="text-white">
-                <a href="{% url 'main:logout' %}">
-                    <button type="button" class="btn btn-danger">Logout</button>
-                </a>
-            </div>
-            </div>
-        </div>
-        </nav>
-</header>
 
-<div class="p-2 container-fluid bg-dark text-white">
+<div class="container-fluid text-white rounded">
     <h5 class="p-2">Sesi terakhir login: {{ last_login }}</h5>
 
     <div class="text-center">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+        <h4>You have {{products.count}} products saved in this inventory</h4>
+        <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #0065a9;">Add Product by AJAX</button>
     </div>
 
     <div id="product_cards">
@@ -86,7 +59,7 @@
     async function refreshProducts() {
     
         const products = await getProducts()
-        let htmlString = '<div class="p-2 row row-cols-1 row-cols-md-4">'
+        let htmlString = '<div class="p-2 row row-cols-sm-2 row-cols-md-4 row-cols-lg-5">'
         products.forEach((product) => { 
 
             htmlString += 
@@ -94,10 +67,10 @@
 
             if (product == products[products.length - 1]){
                 htmlString += 
-                `\n\t<div class="p-2 card mb-3 bg-danger bg-gradient text-white shadow rounded">`
+                `\n\t<div class="p-2 card mb-3 bg-gradient text-white shadow rounded" style="background-color:#333333;">`
             } else {
                 htmlString += 
-                `\n\t<div class="p-2 card mb-3 bg-secondary bg-gradient text-white shadow rounded">`
+                `\n\t<div class="p-2 card mb-3 bg-gradient text-white shadow rounded" style="background-color:#252525;">`
             }
 
             htmlString += 
@@ -110,9 +83,9 @@
                             <h6 class="card-subtitle mb-2">Price: ${product.fields.price}</h6>
                             <p class="card-text text">${product.fields.description}</p>
                             <div class="text-center">
-                                <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=addAmount(${product.pk})>Add</button>
-                                <button type="button" class="btn btn-primary border-dark shadow rounded" onclick=subtractAmount(${product.pk})>Subtract</button>
-                                <button type="button" class="btn btn-danger border-dark shadow rounded" onclick=deleteProduct(${product.pk})>Delete</button>
+                                <button type="button" class="btn border-dark shadow rounded px-1 text-white" onclick=addAmount(${product.pk}) style="background-color: #0065a9;">Add</button>
+                                <button type="button" class="btn border-dark shadow rounded px-1 text-white" onclick=subtractAmount(${product.pk}) style="background-color: #0065a9;">Subtract</button>
+                                <button type="button" class="btn btn-danger border-dark shadow rounded px-1" onclick=deleteProduct(${product.pk})>Delete</button>
                             </div>
                         </div>
                     </div>
