@@ -8,11 +8,11 @@
 
 <div class="container-fluid p-2 d-flex flex-column justify-content-center align-items-center text-white">
 
-    <div class = "register m-5 h-75 d-flex flex-column justify-content-center align-items-center shadow rounded border border-dark">
+    <div class = "register container m-5 p-2 d-flex flex-column justify-content-center align-items-center shadow rounded border border-dark" style="background-color:#252525;">
         
         <h1>Register</h1>  
 
-            <form method="POST" class="col-8">  
+            <form method="POST" class="mx-5">  
                 {% csrf_token %}    
                 <div class="form-group">
                     <label for="id_username">Username*</label>
@@ -36,25 +36,38 @@
                     <input type="password" name="password2" class="form-control" autocomplete="new-password" required id="id_password2">
                     <p>Enter the same password as before, for verification.</p>
                 </div>
+                {% if messages %}     
+                    {% for message in messages %}  
+                        <p>{{ message }}</p>  
+                    {% endfor %}    
+                {% endif %}
                 <br>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn text-white" style="background-color: #0065a9;">Register</button>
                 </div>
             </form>
-
+        
         <br>
         <p class="text-center">Already have an account? <br> <a href="{% url 'main:login' %}">Login</a></p>
-
-        {% if messages %}  
-                <ul>   
-                    {% for message in messages %}  
-                        <li>{{ message }}</li>  
-                    {% endfor %}  
-                </ul>   
-        {% endif %}
 
     </div>  
 
 </div>
+
+<style>
+    .register{
+        width: 50%;
+    }
+    @media (max-width: 800px) {
+            .register {
+                width: 75%;
+            }
+        }
+    @media (max-width: 426px) {
+        .register {
+            width: 100%;
+        }
+    }
+</style>
 
 {% endblock content %}

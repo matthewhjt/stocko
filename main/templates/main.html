@@ -6,7 +6,7 @@
     <h5 class="p-2">Sesi terakhir login: {{ last_login }}</h5>
 
     <div class="text-center">
-        <h4>You have {{products.count}} products saved in this inventory</h4>
+        <h4 id="product_count"></h4>
         <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #0065a9;">Add Product by AJAX</button>
     </div>
 
@@ -59,7 +59,7 @@
     async function refreshProducts() {
     
         const products = await getProducts()
-        let htmlString = '<div class="p-2 row row-cols-sm-2 row-cols-md-4 row-cols-lg-5">'
+        let htmlString = '<div class="p-2 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">'
         products.forEach((product) => { 
 
             htmlString += 
@@ -75,7 +75,7 @@
 
             htmlString += 
                         `<div class="card-header">
-                            <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" width="250" height="250" alt="" class="card-img-top">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5164/5164023.png" loading="lazy" width="250" height="250" alt="" class="card-img-top">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">${product.fields.name}</h5>
@@ -94,6 +94,7 @@
         htmlString += '\n</div>'
         
         document.getElementById("product_cards").innerHTML = htmlString
+        document.getElementById("product_count").innerHTML = "You have " + products.length + " products saved in this inventory"
     }
 
     refreshProducts()
