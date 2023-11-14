@@ -2,7 +2,7 @@
 
 <hr>
 
-## Link menuju situs: https://matthew-hotmaraja-tugas.pbp.cs.ui.ac.id/
+## Link menuju situs: http://matthew-hotmaraja-tugas.pbp.cs.ui.ac.id/
 
 - Nama: Matthew Hotmaraja Johan Turnip
 - NPM: 2206081231
