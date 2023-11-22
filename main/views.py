@@ -1,5 +1,6 @@
+import json
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, JsonResponse
 from main.forms import ProductForm
 from main.models import Product
 from django.urls import reverse
@@ -51,6 +52,14 @@ def show_json(request):
     data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+def get_product_json_flutter(request):
+    data = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def get_product_json_by_id_flutter(request, id):
+    data = Product.objects.filter(user=request.user, pk=id)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 @login_required(login_url='/login')
 def show_xml_by_id(request, id):
     data = Product.objects.filter(user=request.user, pk=id)
@@ -74,7 +83,6 @@ def show_html(request):
 @csrf_exempt
 def register(request):
     form = UserCreationForm()
-
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -168,3 +176,23 @@ def delete_product_ajax(request, id):
     product = Product.objects.get(user=request.user, pk=id)
     product.delete()
     return HttpResponse(b"DELETED", status=204)
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+
+        new_product = Product.objects.create(
+            user = request.user,
+            name = data["name"],
+            amount = data["amount"],
+            price = int(data["price"]),
+            description = data["description"]
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)

@@ -22,4 +22,7 @@ urlpatterns = [
     path('add-amount-ajax/<int:id>/', add_amount_ajax, name='add_amount_ajax'),
     path('subtract-amount-ajax/<int:id>/', subtract_amount_ajax, name='subtract_amount_ajax'),
     path('delete-product-ajax/<int:id>/', delete_product_ajax, name='delete_product_ajax'),
+    path('get-product-json-flutter/', get_product_json_flutter, name='get_product_json_flutter'),
+    path('get-product-json-flutter/<int:id>/', get_product_json_by_id_flutter, name='get_product_json_by_id_flutter'),
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
 ]
